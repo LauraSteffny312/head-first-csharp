@@ -33,13 +33,33 @@ public partial class MainPage : ContentPage
 			animalEmoji.RemoveAt(index);
 		}
 
+		Dispatcher.StartTimer(TimeSpan.FromSeconds(.1), TimerTick);
+	}
+
+	int tenthsOfSecondsElapsed = 0;
+	private bool TimerTick()
+	{
+		if (!this.IsLoaded) return false;
+
+		TenthsOfSecondsElapsed++;
+
+		TimeElapsed.Text = "Time elapsed: " + (TenthsOfSecondsElapsed / 10F).ToString("0.0s");
+
+		if (PlayAgainButton.IsVisible)
+		{
+			TenthsOfSecondsElapsed = 0;
+			return false;
+		}
+		return true;
 	}
 
 	Button lastClicked;
 	bool findingMatch = false;
 	int matchesFound;
 
-	private void Button_Clicked(object sender, EventArgs e)
+    public global::System.Int32 TenthsOfSecondsElapsed { get => tenthsOfSecondsElapsed; set => tenthsOfSecondsElapsed = value; }
+
+    private void Button_Clicked(object sender, EventArgs e)
 	{
 		if (sender is Button buttonClicked)
 		{
